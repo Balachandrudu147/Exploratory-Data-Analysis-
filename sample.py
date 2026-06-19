@@ -1,20 +1,12 @@
-from typing import Any, Optional
-
-import pandas as pd
-
-from data_profiling.report.presentation.core.item_renderer import ItemRenderer
+from data_profiling.report.presentation.core.sample import Sample
+from data_profiling.report.presentation.flavours.html import templates
 
 
-class Sample(ItemRenderer):
-    def __init__(
-        self, name: str, sample: pd.DataFrame, caption: Optional[str] = None, **kwargs
-    ):
-        super().__init__(
-            "sample", {"sample": sample, "caption": caption}, name=name, **kwargs
+class HTMLSample(Sample):
+    def render(self) -> str:
+        sample_html = self.content["sample"].to_html(
+            classes="sample table table-striped"
         )
-
-    def __repr__(self) -> str:
-        return "Sample"
-
-    def render(self) -> Any:
-        raise NotImplementedError()
+        return templates.template("sample.html").render(
+            **self.content, sample_html=sample_html
+        )

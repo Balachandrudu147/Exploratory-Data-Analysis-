@@ -1,16 +1,24 @@
-from typing import Any
-
 import pandas as pd
 
-from data_profiling.report.presentation.core.item_renderer import ItemRenderer
+from data_profiling.report.presentation.core.duplicate import Duplicate
+from data_profiling.report.presentation.flavours.html import templates
 
 
-class Duplicate(ItemRenderer):
-    def __init__(self, name: str, duplicate: pd.DataFrame, **kwargs):
-        super().__init__("duplicate", {"duplicate": duplicate}, name=name, **kwargs)
+def to_html(df: pd.DataFrame) -> str:
+    html = df.to_html(
+        classes="duplicate table table-striped",
+    )
+    if df.empty:
+        html = html.replace(
+            "<tbody>",
+            f"<tbody><tr><td colspan={len(df.columns) + 1}>Dataset does not contain duplicate rows.</td></tr>",
+        )
+    return html
 
-    def __repr__(self) -> str:
-        return "Duplicate"
 
-    def render(self) -> Any:
-        raise NotImplementedError()
+class HTMLDuplicate(Duplicate):
+    def render(self) -> str:
+        duplicate_html = to_html(self.content["duplicate"])
+        return templates.template("duplicate.html").render(
+            **self.content, duplicate_html=duplicate_html
+        )

@@ -1,35 +1,14 @@
-from typing import Any, Callable
-
-from data_profiling.config import Style
-from data_profiling.report.presentation.core.item_renderer import ItemRenderer
-from data_profiling.report.presentation.core.renderable import Renderable
+from data_profiling.report.presentation.core.root import Root
+from data_profiling.report.presentation.flavours.html import templates
 
 
-class Root(ItemRenderer):
-    """
-    Wrapper for the report.
-    """
+class HTMLRoot(Root):
+    def render(self, **kwargs) -> str:
+        nav_items = [
+            (section.name, section.anchor_id)
+            for section in self.content["body"].content["items"]
+        ]
 
-    def __init__(
-        self, name: str, body: Renderable, footer: Renderable, style: Style, **kwargs
-    ):
-        super().__init__(
-            "report",
-            {"body": body, "footer": footer, "style": style},
-            name=name,
-            **kwargs
+        return templates.template("report.html").render(
+            **self.content, nav_items=nav_items, **kwargs
         )
-
-    def __repr__(self) -> str:
-        return "Root"
-
-    def render(self, **kwargs) -> Any:
-        raise NotImplementedError()
-
-    @classmethod
-    def convert_to_class(cls, obj: Renderable, flv: Callable) -> None:
-        obj.__class__ = cls
-        if "body" in obj.content:
-            flv(obj.content["body"])
-        if "footer" in obj.content:
-            flv(obj.content["footer"])

@@ -1,55 +1,47 @@
-import importlib
+from data_profiling.report.presentation.flavours.html.alerts import HTMLAlerts
+from data_profiling.report.presentation.flavours.html.collapse import HTMLCollapse
+from data_profiling.report.presentation.flavours.html.container import HTMLContainer
+from data_profiling.report.presentation.flavours.html.correlation_table import (
+    HTMLCorrelationTable,
+)
+from data_profiling.report.presentation.flavours.html.dropdown import HTMLDropdown
+from data_profiling.report.presentation.flavours.html.duplicate import HTMLDuplicate
+from data_profiling.report.presentation.flavours.html.frequency_table import (
+    HTMLFrequencyTable,
+)
+from data_profiling.report.presentation.flavours.html.frequency_table_small import (
+    HTMLFrequencyTableSmall,
+)
+from data_profiling.report.presentation.flavours.html.html import HTMLHTML
+from data_profiling.report.presentation.flavours.html.image import HTMLImage
+from data_profiling.report.presentation.flavours.html.root import HTMLRoot
+from data_profiling.report.presentation.flavours.html.sample import HTMLSample
+from data_profiling.report.presentation.flavours.html.scores import HTMLScores
+from data_profiling.report.presentation.flavours.html.table import HTMLTable
+from data_profiling.report.presentation.flavours.html.toggle_button import (
+    HTMLToggleButton,
+)
+from data_profiling.report.presentation.flavours.html.variable import HTMLVariable
+from data_profiling.report.presentation.flavours.html.variable_info import (
+    HTMLVariableInfo,
+)
 
-# List of modules in the 'pandas' model that should be imported explicitly
-PANDAS_MODULES = [
-    "correlations_pandas",
-    "describe_generic_pandas",
-    "describe_boolean_pandas",
-    "describe_categorical_pandas",
-    "describe_url_pandas",
-    "describe_file_pandas",
-    "describe_text_pandas",
-    "describe_timeseries_pandas",
-    "describe_numeric_pandas",
-    "describe_path_pandas",
-    "describe_image_pandas",
-    "describe_date_pandas",
-    "describe_counts_pandas",
-    "duplicates_pandas",
-    "sample_pandas",
-    "table_pandas",
-    "timeseries_index_pandas",
-    "summary_pandas",
-]
-
-# Dynamically import and expose functions from modules
-for module_name in PANDAS_MODULES:
-    module = importlib.import_module(f"data_profiling.model.pandas.{module_name}")
-    globals().update(
-        {
-            name: getattr(module, name)
-            for name in dir(module)
-            if not name.startswith("_")
-        }
-    )
-
-# Explicitly list exposed names for clarity
 __all__ = [
-    "pandas_describe_generic",
-    "pandas_describe_boolean_1d",
-    "pandas_describe_categorical_1d",
-    "pandas_describe_url_1d",
-    "pandas_describe_file_1d",
-    "pandas_describe_text_1d",
-    "pandas_describe_timeseries_1d",
-    "pandas_describe_numeric_1d",
-    "pandas_describe_path_1d",
-    "pandas_describe_image_1d",
-    "pandas_describe_date_1d",
-    "pandas_describe_counts",
-    "pandas_get_duplicates",
-    "pandas_get_sample",
-    "pandas_get_table_stats",
-    "pandas_get_time_index_description",
-    "pandas_get_series_descriptions",
+    "HTMLCollapse",
+    "HTMLContainer",
+    "HTMLDuplicate",
+    "HTMLDropdown",
+    "HTMLFrequencyTable",
+    "HTMLFrequencyTableSmall",
+    "HTMLHTML",
+    "HTMLImage",
+    "HTMLRoot",
+    "HTMLSample",
+    "HTMLTable",
+    "HTMLToggleButton",
+    "HTMLVariable",
+    "HTMLVariableInfo",
+    "HTMLAlerts",
+    "HTMLCorrelationTable",
+    "HTMLScores",
 ]

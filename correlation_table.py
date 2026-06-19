@@ -1,21 +1,13 @@
-from typing import Any
-
-import pandas as pd
-
-from data_profiling.report.presentation.core.item_renderer import ItemRenderer
+from data_profiling.report.presentation.core.correlation_table import CorrelationTable
+from data_profiling.report.presentation.flavours.html import templates
 
 
-class CorrelationTable(ItemRenderer):
-    def __init__(self, name: str, correlation_matrix: pd.DataFrame, **kwargs):
-        super().__init__(
-            "correlation_table",
-            {"correlation_matrix": correlation_matrix},
-            name=name,
-            **kwargs
+class HTMLCorrelationTable(CorrelationTable):
+    def render(self) -> str:
+        correlation_matrix_html = self.content["correlation_matrix"].to_html(
+            classes="correlation-table table table-striped",
+            float_format="{:.3f}".format,
         )
-
-    def __repr__(self) -> str:
-        return "CorrelationTable"
-
-    def render(self) -> Any:
-        raise NotImplementedError()
+        return templates.template("correlation_table.html").render(
+            **self.content, correlation_matrix_html=correlation_matrix_html
+        )

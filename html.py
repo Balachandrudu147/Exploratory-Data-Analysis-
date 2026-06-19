@@ -1,14 +1,6 @@
-from typing import Any
-
-from data_profiling.report.presentation.core.item_renderer import ItemRenderer
+from data_profiling.report.presentation.core import HTML
 
 
-class HTML(ItemRenderer):
-    def __init__(self, content: str, **kwargs):
-        super().__init__("html", {"html": content}, **kwargs)
-
-    def __repr__(self) -> str:
-        return "HTML"
-
-    def render(self) -> Any:
-        raise NotImplementedError()
+class HTMLHTML(HTML):
+    def render(self) -> str:
+        return self.content["html"]

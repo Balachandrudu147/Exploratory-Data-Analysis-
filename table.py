@@ -1,26 +1,7 @@
-from typing import Any, Optional, Sequence
-
-from data_profiling.config import Style
-from data_profiling.report.presentation.core.item_renderer import ItemRenderer
+from data_profiling.report.presentation.core.table import Table
+from data_profiling.report.presentation.flavours.html import templates
 
 
-class Table(ItemRenderer):
-    def __init__(
-        self,
-        rows: Sequence,
-        style: Style,
-        name: Optional[str] = None,
-        caption: Optional[str] = None,
-        **kwargs
-    ):
-        super().__init__(
-            "table",
-            {"rows": rows, "name": name, "caption": caption, "style": style},
-            **kwargs
-        )
-
-    def __repr__(self) -> str:
-        return "Table"
-
-    def render(self) -> Any:
-        raise NotImplementedError()
+class HTMLTable(Table):
+    def render(self) -> str:
+        return templates.template("table.html").render(**self.content)

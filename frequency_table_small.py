@@ -1,16 +1,15 @@
-from typing import Any, List
+from data_profiling.report.presentation.core import FrequencyTableSmall
+from data_profiling.report.presentation.flavours.html import templates
 
-from data_profiling.report.presentation.core.item_renderer import ItemRenderer
 
+class HTMLFrequencyTableSmall(FrequencyTableSmall):
+    def render(self) -> str:
+        html = ""
+        kwargs = self.content.copy()
+        del kwargs["rows"]
 
-class FrequencyTableSmall(ItemRenderer):
-    def __init__(self, rows: List[Any], redact: bool, **kwargs):
-        super().__init__(
-            "frequency_table_small", {"rows": rows, "redact": redact}, **kwargs
-        )
-
-    def __repr__(self) -> str:
-        return "FrequencyTableSmall"
-
-    def render(self) -> Any:
-        raise NotImplementedError()
+        for idx, rows in enumerate(self.content["rows"]):
+            html += templates.template("frequency_table_small.html").render(
+                rows=rows, idx=idx, **kwargs
+            )
+        return html

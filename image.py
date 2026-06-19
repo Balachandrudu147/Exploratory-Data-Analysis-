@@ -1,34 +1,7 @@
-from typing import Any, Optional
-
-from data_profiling.config import ImageType
-from data_profiling.report.presentation.core.item_renderer import ItemRenderer
+from data_profiling.report.presentation.core import Image
+from data_profiling.report.presentation.flavours.html import templates
 
 
-class Image(ItemRenderer):
-    def __init__(
-        self,
-        image: str,
-        image_format: ImageType,
-        alt: str,
-        caption: Optional[str] = None,
-        **kwargs,
-    ):
-        if image is None:
-            raise ValueError(f"Image may not be None (alt={alt}, caption={caption})")
-
-        super().__init__(
-            "image",
-            {
-                "image": image,
-                "image_format": image_format,
-                "alt": alt,
-                "caption": caption,
-            },
-            **kwargs,
-        )
-
-    def __repr__(self) -> str:
-        return "Image"
-
-    def render(self) -> Any:
-        raise NotImplementedError()
+class HTMLImage(Image):
+    def render(self) -> str:
+        return templates.template("diagram.html").render(**self.content)

@@ -1,18 +1,10 @@
-from typing import Any, Dict, List, Union
-
-from data_profiling.config import Style
-from data_profiling.model.alerts import Alert
-from data_profiling.report.presentation.core.item_renderer import ItemRenderer
+from data_profiling.report.presentation.core.alerts import Alerts
+from data_profiling.report.presentation.flavours.html import templates
+from data_profiling.utils.styles import get_alert_styles
 
 
-class Alerts(ItemRenderer):
-    def __init__(
-        self, alerts: Union[List[Alert], Dict[str, List[Alert]]], style: Style, **kwargs
-    ):
-        super().__init__("alerts", {"alerts": alerts, "style": style}, **kwargs)
+class HTMLAlerts(Alerts):
+    def render(self) -> str:
+        styles = get_alert_styles()
 
-    def __repr__(self):
-        return "Alerts"
-
-    def render(self) -> Any:
-        raise NotImplementedError()
+        return templates.template("alerts.html").render(**self.content, styles=styles)

@@ -1,32 +1,11 @@
 """
-    Scores ItemRendered class
+    Scores HTML renderer class
 """
-from typing import Any, Dict, List, Optional
-
-from data_profiling.config import Style
-from data_profiling.report.presentation.core.item_renderer import ItemRenderer
+from data_profiling.report.presentation.core.scores import Scores
+from data_profiling.report.presentation.flavours.html import templates
 
 
-class Scores(ItemRenderer):
-    def __init__(
-        self,
-        items: List[Dict],
-        overall_score: float,
-        style: Style,
-        name: Optional[str],
-        **kwargs
-    ):
-        content = {
-            "items": items,
-            "overall_score": overall_score,
-            "name": name,
-            "style": style,
-        }
-
-        super().__init__("scores", content=content, **kwargs)
-
-    def __repr__(self) -> str:
-        return "Scores"
-
-    def render(self) -> Any:
-        raise NotImplementedError("Handled by flavour-specific class")
+# create the logic for this one
+class HTMLScores(Scores):
+    def render(self) -> str:
+        return templates.template("scores.html").render(**self.content)

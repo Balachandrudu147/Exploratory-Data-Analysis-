@@ -1,14 +1,7 @@
-from typing import Any
+from data_profiling.report.presentation.core import ToggleButton
+from data_profiling.report.presentation.flavours.html import templates
 
-from data_profiling.report.presentation.core.item_renderer import ItemRenderer
 
-
-class ToggleButton(ItemRenderer):
-    def __init__(self, text: str, **kwargs):
-        super().__init__("toggle_button", {"text": text}, **kwargs)
-
-    def __repr__(self) -> str:
-        return "ToggleButton"
-
-    def render(self) -> Any:
-        raise NotImplementedError()
+class HTMLToggleButton(ToggleButton):
+    def render(self) -> str:
+        return templates.template("toggle_button.html").render(**self.content)
